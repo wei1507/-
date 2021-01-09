@@ -35,13 +35,16 @@ while theta_2_degree <= 360.1:
     theta_2 = math.radians(theta_2_degree)
     y = np.append(y, theta_2)
     # Position
-    A = -2*r2*(math.cos(theta_1)*math.cos(theta_2) + math.sin(theta_1)*math.cos(theta_2))
+    A = -2*r2*(math.cos(theta_1)*math.cos(theta_2) + math.sin(theta_1)*math.sin(theta_2))
     B = r2*r2 - r3*r3
     r1 = (-A + (A*A-4*B)**0.5)/2
     theta_3 = math.atan((-r2*math.sin(theta_2))/(r1*math.cos(theta_1) - r2*math.cos(theta_2)))
     # 只在 i 方向移動
     r1_position_i = r2*math.cos(theta_2) + r3*math.cos(theta_3)
+    '''
     x = np.append(x, r1_position_i)
+    '''
+    
     # Velocity
     theta_2_v = EngineRpm*2*math.pi/60
     C = np.array([[1, r3*math.sin(theta_3)],
@@ -52,6 +55,9 @@ while theta_2_degree <= 360.1:
     E = C_inverse.dot(D)
     r1_Velocity_temp = E[0]
     theta_3_v = E[1]
+    '''
+    x = np.append(x, r1_Velocity_temp/1000)
+    '''
     if abs(r1_Velocity_temp) > r1_Velocity:
         r1_Velocity = r1_Velocity_temp
         max_theta_2_v = theta_2_degree
@@ -63,6 +69,7 @@ while theta_2_degree <= 360.1:
     G = C_inverse.dot(F)
     r1_Acceleration_temp = G[0]
     theta_3_a = G[1]
+    x = np.append(x, r1_Acceleration_temp/1000)
     if abs(r1_Acceleration_temp) > r1_Acceleration:
         r1_Acceleration = r1_Acceleration_temp
         max_theta_2_a = theta_2_degree
