@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 #  參考課本p.330~337
 #  r2:曲柄, r3:連桿 (mm)
 r2 = 38.2
-r3 = 58.0
+r3 = 130.0
 r4 = 0.0
 
 # Wheel (m)
@@ -28,7 +28,7 @@ theta_2 = 0
 r1_Velocity = 0
 r1_Acceleration = 0
 theta_2_degree = 0
-print(EngineRpm*2*math.pi/60)
+
 x = np.array([])
 y = np.array([])
 while theta_2_degree <= 360.1:
@@ -41,7 +41,7 @@ while theta_2_degree <= 360.1:
     theta_3 = math.atan((-r2*math.sin(theta_2))/(r1*math.cos(theta_1) - r2*math.cos(theta_2)))
     # 只在 i 方向移動
     r1_position_i = r2*math.cos(theta_2) + r3*math.cos(theta_3)
-
+    x = np.append(x, r1_position_i)
     # Velocity
     theta_2_v = EngineRpm*2*math.pi/60
     C = np.array([[1, r3*math.sin(theta_3)],
@@ -52,7 +52,6 @@ while theta_2_degree <= 360.1:
     E = C_inverse.dot(D)
     r1_Velocity_temp = E[0]
     theta_3_v = E[1]
-    x = np.append(x, theta_3_v)
     if abs(r1_Velocity_temp) > r1_Velocity:
         r1_Velocity = r1_Velocity_temp
         max_theta_2_v = theta_2_degree
